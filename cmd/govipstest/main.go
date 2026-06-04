@@ -17,10 +17,10 @@ func main() {
 	}
 
 	fmt.Println("--- Processing Lion Head Big (Baseline, 10MB) ---")
-	processImage("data/lionheadbig.jpg", "data/output_baseline_to_progressive.jpg", true)
+	processImage("data/lionheadbig.jpg", "data/output_lionheadbig_to_progressive.jpg", true)
 
-	fmt.Println("\n--- Processing Lion Face (Progressive, 1MB) ---")
-	processImage("data/lionface.jpg", "data/output_progressive_compressed.jpg", false)
+	fmt.Println("\n--- Processing Lion Face (Progressive, 10MB) ---")
+	processImage("data/lionheadbig.jpg", "data/output_lionheadbig_nonprogressive.jpg", false)
 }
 
 func processImage(inputPath, outputPath string, makeProgressive bool) {
@@ -39,18 +39,18 @@ func processImage(inputPath, outputPath string, makeProgressive bool) {
 
 	// Optional: Let's do a fast native downscale operation just to demonstrate libvips speed
 	// This uses a high-quality Lanczos3 kernel under the hood
-	if width > 2000 {
+	/*if width > 2000 {
 		fmt.Println("Image is large, resizing down by 50%...")
 		err = img.Resize(0.5, vips.KernelLanczos3)
 		if err != nil {
 			log.Fatalf("Failed to resize: %v", err)
 		}
-	}
+	}*/
 
 	// 4. Configure our granular JPEG encoder parameters
 	// This gives us the deep control over the final disk format
 	ep := vips.NewJpegExportParams()
-	ep.Quality = 85          // 85 is the sweet spot for web optimization
+	ep.Quality = 95          // 85 is good for web, we use 95
 	ep.StripMetadata = true  // Strips EXIF/JFIF header bloat
 	ep.OptimizeCoding = true // Computes optimal Huffman tables
 
